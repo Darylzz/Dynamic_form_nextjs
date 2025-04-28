@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { PrimeReactProvider } from "primereact/api";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+import Tailwind from "primereact/passthrough/tailwind";
+// import "primereact/resources/primereact.min.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,10 +27,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+    <html lang='en'>
+      {/* <body className={`${geistSans.variable} ${geistMono.variable}`}> */}
+      <body>
+        <div className='container'>
+          <PrimeReactProvider value={{ pt: Tailwind }}>{children}</PrimeReactProvider>
+        </div>
       </body>
+      {/* </body> */}
     </html>
   );
 }
