@@ -81,6 +81,7 @@ const FormComponent = ({ ...props }) => {
               </label>
               {form.CTRL_TYPE === ControlType.INPUT && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
@@ -115,6 +116,7 @@ const FormComponent = ({ ...props }) => {
                     return (
                       <>
                         <InputNumber
+                          key={form.CTRL_KEY}
                           invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                           name={field.name}
                           value={value}
@@ -132,12 +134,14 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.PHONE && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => (
                     <>
                       <InputMask
+                        key={form.CTRL_KEY}
                         invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                         name={field.name}
                         value={field.value}
@@ -155,12 +159,14 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.AUTOCOMPLETE && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => (
                     <>
                       <AutoComplete
+                        key={form.CTRL_KEY}
                         className='w-full'
                         invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                         name={field.name}
@@ -182,6 +188,7 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.CHECKBOX && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
@@ -190,6 +197,7 @@ const FormComponent = ({ ...props }) => {
                     return (
                       <>
                         <Checkbox
+                          key={form.CTRL_KEY}
                           invalid={fieldState.error !== undefined}
                           checked={field.value}
                           name={field.name}
@@ -205,6 +213,7 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.MULTISELECT && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
@@ -212,6 +221,7 @@ const FormComponent = ({ ...props }) => {
                     return (
                       <>
                         <MultiSelect
+                          key={form.CTRL_KEY}
                           name={field.name}
                           invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                           ref={field.ref}
@@ -237,6 +247,7 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.MULTICHIP && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
@@ -244,6 +255,7 @@ const FormComponent = ({ ...props }) => {
                     return (
                       <>
                         <MultiSelect
+                          key={form.CTRL_KEY}
                           name={field.name}
                           invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                           ref={field.ref}
@@ -270,6 +282,7 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.DATEPICKER && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
@@ -277,6 +290,7 @@ const FormComponent = ({ ...props }) => {
                     return (
                       <>
                         <Calendar
+                          key={form.CTRL_KEY}
                           name={field.name}
                           invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                           ref={field.ref}
@@ -299,6 +313,7 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.PASSWORD && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
@@ -306,6 +321,7 @@ const FormComponent = ({ ...props }) => {
                     return (
                       <>
                         <Password
+                          key={form.CTRL_KEY}
                           name={field.name}
                           invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                           ref={field.ref}
@@ -330,6 +346,7 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.TEXTAREA && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
@@ -337,6 +354,7 @@ const FormComponent = ({ ...props }) => {
                     return (
                       <>
                         <InputTextarea
+                          key={form.CTRL_KEY}
                           name={field.name}
                           invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                           ref={field.ref}
@@ -357,6 +375,7 @@ const FormComponent = ({ ...props }) => {
               )}
               {form.CTRL_TYPE === ControlType.RADIOBUTTON && (
                 <Controller
+                  key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
                   rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
@@ -367,6 +386,7 @@ const FormComponent = ({ ...props }) => {
                           return (
                             <div className='flex gap-3'>
                               <RadioButton
+                                key={form.CTRL_KEY}
                                 inputId={item.code}
                                 name={field.name}
                                 invalid={fieldState.error !== undefined}
