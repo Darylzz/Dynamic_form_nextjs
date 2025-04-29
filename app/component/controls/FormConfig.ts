@@ -21,6 +21,15 @@ export interface FormConfig {
   EMPTY_MESSAGE?: string;
   OPTIONS?: any[];
   WIDTH?: string;
+  FILTER_MULTISELECT?: boolean;
+  MAX_SELECTED_LABEL?: number;
+  MIN_DATE?: Date;
+  MAX_DATE?: Date;
+  SHOW_ICON_CARLENDAR?: boolean;
+  TOGGLE_MASK_PASSWORD?: boolean;
+  ROW_TEXTAREA?: number;
+  COL_TEXTAREA?: number;
+  AUTO_RESIZE_TEXTAREA?: boolean;
   onChange?: (value: any) => void;
 }
 
@@ -32,4 +41,9 @@ export interface HasButtonInForm {
 export interface SetFormValue {
   name: string;
   value: any;
+}
+
+export interface Options {
+  name: string;
+  code: string;
 }
