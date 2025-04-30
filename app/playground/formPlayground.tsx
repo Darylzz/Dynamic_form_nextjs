@@ -48,6 +48,7 @@ export default function FormPlayground() {
       ERROR_MESSAGE: 'autocomplete is required',
       DISABLED: false,
       OPTIONS: [],
+      OPTION_LABEL: 'name',
       onChange: (value: string) => {
         console.log(value);
       },
@@ -173,6 +174,7 @@ export default function FormPlayground() {
         { name: 'name', value: 'testSetFormValue' },
         { name: 'number', value: 123456789 },
       ]);
+      //วิธี set value ของ form ให้ส่ง name ที่มีค่าเดียวกันกับ field พร้อมกับ value ที่ต้องการจะ set เข้าไป
     }
   };
 
