@@ -16,9 +16,10 @@ import { RadioButton } from 'primereact/radiobutton';
 import { Button } from 'primereact/button';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { FormEvent } from 'primereact/ts-helpers';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const FormComponent = ({ ...props }) => {
-  const { formConfig, onSubmit, formConfigButton, initialFormValue } = props;
+  const { formConfig, onSubmit, formConfigButton, initialFormValue, schema } = props;
 
   const [optionsAutocomplete, setOptionsAutoComplete] = useState<Options[]>([]);
   const [optionMultiSelect, setOptionMultiSelect] = useState<Options[]>([]);
@@ -39,25 +40,34 @@ const FormComponent = ({ ...props }) => {
     if (indexMultiChip !== -1) {
       setOptionMultiChip(formConfig[indexMultiChip].OPTIONS ?? []);
     }
-  });
+  }, [formConfig]);
 
   useEffect(() => {
     //จะ set form value เมื่อ state initialFormValue มีการเปลี่ยนแปลง จะเป็นการส่ง state จากหน้าที่มีการเรียกใช้ form control อีกที
-    if (initialFormValue.length > 0) {
+    if (initialFormValue && initialFormValue.length > 0) {
       initialFormValue.forEach((item: SetFormValue) => {
         setValue(item.name, item.value);
       });
     }
   }, [initialFormValue]);
 
+  const defaultValues = formConfig.reduce((acc: any, item: FormConfig) => {
+    acc[item.CTRL_KEY] = item.DEFAULT_VALUE ?? undefined;
+    return acc;
+  }, {} as Record<string, any>);
+
   const {
     control,
-    formState: { errors },
+    // formState: { errors },
     handleSubmit,
     getValues,
     setValue,
     reset,
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: defaultValues,
+    mode: 'all',
+  });
 
   const completeMethodAutoComplete = (event: AutoCompleteCompleteEvent) => {
     const filter = optionsAutocomplete.filter((item: any) => {
@@ -84,8 +94,9 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
+                    console.log(fieldState, field);
                     return (
                       <>
                         <InputText
@@ -110,7 +121,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     const value = typeof field.value === 'string' ? parseInt(field.value) : field.value;
                     return (
@@ -137,7 +148,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => (
                     <>
                       <InputMask
@@ -162,7 +173,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => (
                     <>
                       <AutoComplete
@@ -176,7 +187,7 @@ const FormComponent = ({ ...props }) => {
                         placeholder={form.PLACEHOLDER}
                         onChange={(e) => field.onChange(e.target.value, form.onChange && form.onChange(e.target.value))}
                         emptyMessage={form.EMPTY_MESSAGE}
-                        suggestions={optionsAutocomplete}
+                        suggestions={optionsAutocomplete ?? []}
                         completeMethod={(e) => completeMethodAutoComplete(e)}
                         field={form.OPTION_LABEL}
                         disabled={form.DISABLED}
@@ -191,7 +202,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     console.log(field);
                     return (
@@ -216,7 +227,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     return (
                       <>
@@ -228,7 +239,7 @@ const FormComponent = ({ ...props }) => {
                           value={field.value}
                           onBlur={field.onBlur}
                           emptyMessage={form.EMPTY_MESSAGE}
-                          options={optionMultiSelect}
+                          options={optionMultiSelect ?? []}
                           placeholder={form.PLACEHOLDER}
                           filter={form.FILTER_MULTISELECT ?? false}
                           optionLabel={form.OPTION_LABEL}
@@ -250,7 +261,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     return (
                       <>
@@ -262,7 +273,7 @@ const FormComponent = ({ ...props }) => {
                           value={field.value}
                           onBlur={field.onBlur}
                           emptyMessage={form.EMPTY_MESSAGE}
-                          options={optionMultiChip}
+                          options={optionMultiChip ?? []}
                           placeholder={form.PLACEHOLDER}
                           filter={form.FILTER_MULTISELECT ?? false}
                           optionLabel={form.OPTION_LABEL}
@@ -285,7 +296,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     return (
                       <>
@@ -316,7 +327,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     return (
                       <>
@@ -349,7 +360,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     return (
                       <>
@@ -378,7 +389,7 @@ const FormComponent = ({ ...props }) => {
                   key={form.CTRL_KEY}
                   name={form.CTRL_KEY}
                   control={control}
-                  rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
+                  // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     return (
                       <>
@@ -386,7 +397,7 @@ const FormComponent = ({ ...props }) => {
                           return (
                             <div className='flex gap-3'>
                               <RadioButton
-                                key={form.CTRL_KEY}
+                                key={`${form.CTRL_KEY}-${item.code}`}
                                 inputId={item.code}
                                 name={field.name}
                                 invalid={fieldState.error !== undefined}
