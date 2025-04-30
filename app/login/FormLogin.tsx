@@ -6,9 +6,11 @@ import { FormConfig, HasButtonInForm } from '../component/controls/FormConfig';
 import { ControlType } from '../component/controls/FormControlType';
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const FormLogin = () => {
   const router = useRouter();
+  const [errors, setErrors] = useState({});
   const formConfig: FormConfig[] = [
     {
       LABEL: 'Username',
@@ -52,11 +54,15 @@ const FormLogin = () => {
 
   const onSubmit = (data: any) => {
     console.log(data);
+    if (data.username === 'test@example.com') {
+      setErrors({ type: 'custom', message: 'invalid username or password', name: ['username', 'password'] });
+      //วิธี set error แบบ  dynamic กรณีที่อาจจะต้องมีไปเช็คกับ api ก่อนเพื่อ get message something ก่อนจึงทำการ handle error ต่อได้ name จำเป็นต้องส่งเป็น array เสมอ และ name ต้องตรงกับชื่อ field เสมอ
+    }
   };
 
   return (
     <>
-      <FormComponent formConfig={formConfig} schema={schema} onSubmit={onSubmit} formConfigButton={hasButtonForm}>
+      <FormComponent formConfig={formConfig} schema={schema} onSubmit={onSubmit} formConfigButton={hasButtonForm} errors={errors}>
         <Button type='button' label='Forget password' onClick={onClickNavigate}></Button>
       </FormComponent>
     </>

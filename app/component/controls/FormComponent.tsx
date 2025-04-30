@@ -56,6 +56,7 @@ const FormComponent = ({ ...props }) => {
       errors.name.forEach((item: string) => {
         setError(item, { type: errors.type, message: errors.message });
       });
+      //เป็นการ set error ให้กับ react-hook-form นำ message ไปใช้ได้เลย name ที่ได้รับมาจะต้องตรงกับชื่อ field
     }
   }, [errors]);
 
