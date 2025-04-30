@@ -19,7 +19,7 @@ export default function LayoutComponent({ ...props }) {
     <>
       <div className='flex gap-3 p-3'>
         <Button disabled={pathName === '/playground'} label='Playground' onClick={() => handleClickNavigate('playground')} />
-        <Button disabled={pathName === '/login'} label='Login' onClick={() => handleClickNavigate('login')} />
+        <Button disabled={pathName === '/login' || pathName === '/login/forgetPassword'} label='Login' onClick={() => handleClickNavigate('login')} />
       </div>
       <div className='p-3'>{children}</div>
     </>
