@@ -19,7 +19,7 @@ import { FormEvent } from 'primereact/ts-helpers';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const FormComponent = ({ ...props }) => {
-  const { formConfig, onSubmit, formConfigButton, initialFormValue, schema } = props;
+  const { formConfig, onSubmit, formConfigButton, initialFormValue, schema, errors } = props;
 
   const [optionsAutocomplete, setOptionsAutoComplete] = useState<Options[]>([]);
   const [optionMultiSelect, setOptionMultiSelect] = useState<Options[]>([]);
@@ -51,6 +51,14 @@ const FormComponent = ({ ...props }) => {
     }
   }, [initialFormValue]);
 
+  useEffect(() => {
+    if (errors.name && errors.name.length) {
+      errors.name.forEach((item: string) => {
+        setError(item, { type: errors.type, message: errors.message });
+      });
+    }
+  }, [errors]);
+
   const defaultValues = formConfig.reduce((acc: any, item: FormConfig) => {
     acc[item.CTRL_KEY] = item.DEFAULT_VALUE ?? undefined;
     return acc;
@@ -63,6 +71,7 @@ const FormComponent = ({ ...props }) => {
     getValues,
     setValue,
     reset,
+    setError,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: defaultValues,
