@@ -1,7 +1,7 @@
 'use client';
 import './FormComponent.css';
 import { useForm, Controller } from 'react-hook-form';
-import { FormConfig, Options, SetFormValue } from './FormConfig';
+import { FormConfig, Options, SetErrorType, SetFormValue } from './FormConfig';
 import { ControlType } from './FormControlType';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
@@ -52,11 +52,11 @@ const FormComponent = ({ ...props }) => {
   }, [initialFormValue]);
 
   useEffect(() => {
-    if (errors.name && errors.name.length) {
-      errors.name.forEach((item: string) => {
-        setError(item, { type: errors.type, message: errors.message });
+    if (errors && errors.length) {
+      errors.forEach((err: SetErrorType) => {
+        setError(err.name, { type: err.type, message: err.message });
       });
-      //เป็นการ set error ให้กับ react-hook-form นำ message ไปใช้ได้เลย name ที่ได้รับมาจะต้องตรงกับชื่อ field
+      //เป็นการ set error ให้กับ react-hook-form
     }
   }, [errors]);
 
