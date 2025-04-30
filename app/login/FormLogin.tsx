@@ -39,8 +39,8 @@ const FormLogin = () => {
   // จัดการ validation ด้วย zod library
   let schema = z
     .object({
-      username: z.string().email('Invalid email'),
-      password: z.string().min(8, 'Password must be at least 8 characters'),
+      username: z.string({ required_error: 'Username is required' }).min(5, 'Username must be at least 5 characters'),
+      password: z.string({ required_error: 'Password is required' }).min(8, 'Password must be at least 8 characters'),
     })
     .partial()
     .required({
@@ -54,7 +54,7 @@ const FormLogin = () => {
 
   const onSubmit = (data: any) => {
     console.log(data);
-    if (data.username === 'test@example.com') {
+    if (data.username === 'admin') {
       const error: SetErrorType[] = [
         {
           name: 'username',
