@@ -106,7 +106,7 @@ const FormComponent = ({ ...props }) => {
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
-                    console.log(fieldState, field);
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         <InputText
@@ -114,7 +114,7 @@ const FormComponent = ({ ...props }) => {
                           invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                           name={field.name}
                           value={field.value}
-                          onChange={(e) => field.onChange(e.target.value, form.onChange && form.onChange(e.target.value))}
+                          onChange={(e) => field.onChange(e.target.value)}
                           ref={field.ref}
                           onBlur={field.onBlur}
                           placeholder={form.PLACEHOLDER}
@@ -134,6 +134,7 @@ const FormComponent = ({ ...props }) => {
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
                     const value = typeof field.value === 'string' ? parseInt(field.value) : field.value;
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         <InputNumber
@@ -141,7 +142,7 @@ const FormComponent = ({ ...props }) => {
                           invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
                           name={field.name}
                           value={value}
-                          onChange={(e) => field.onChange(e.value, form.onChange && form.onChange(e.value))}
+                          onChange={(e) => field.onChange(e.value)}
                           ref={field.ref}
                           onBlur={field.onBlur}
                           placeholder={form.PLACEHOLDER}
@@ -159,23 +160,26 @@ const FormComponent = ({ ...props }) => {
                   name={form.CTRL_KEY}
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
-                  render={({ field, fieldState }) => (
-                    <>
-                      <InputMask
-                        key={form.CTRL_KEY}
-                        invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
-                        name={field.name}
-                        value={field.value}
-                        ref={field.ref}
-                        onBlur={field.onBlur}
-                        placeholder={form.PLACEHOLDER}
-                        mask={form.PLACEHOLDER}
-                        onChange={(e) => field.onChange(e.target.value, form.onChange && form.onChange(e.target.value))}
-                        disabled={form.DISABLED}
-                      />
-                      {fieldState.error !== undefined && <span className='text-red-500'>{fieldState.error.message || form.ERROR_MESSAGE}</span>}
-                    </>
-                  )}
+                  render={({ field, fieldState }) => {
+                    form.onChange && form.onChange(field.value);
+                    return (
+                      <>
+                        <InputMask
+                          key={form.CTRL_KEY}
+                          invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
+                          name={field.name}
+                          value={field.value}
+                          ref={field.ref}
+                          onBlur={field.onBlur}
+                          placeholder={form.PLACEHOLDER}
+                          mask={form.PLACEHOLDER}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          disabled={form.DISABLED}
+                        />
+                        {fieldState.error !== undefined && <span className='text-red-500'>{fieldState.error.message || form.ERROR_MESSAGE}</span>}
+                      </>
+                    );
+                  }}
                 />
               )}
               {form.CTRL_TYPE === ControlType.AUTOCOMPLETE && (
@@ -184,27 +188,30 @@ const FormComponent = ({ ...props }) => {
                   name={form.CTRL_KEY}
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
-                  render={({ field, fieldState }) => (
-                    <>
-                      <AutoComplete
-                        key={form.CTRL_KEY}
-                        className='w-full'
-                        invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
-                        name={field.name}
-                        value={field.value}
-                        ref={field.ref}
-                        onBlur={field.onBlur}
-                        placeholder={form.PLACEHOLDER}
-                        onChange={(e) => field.onChange(e.target.value, form.onChange && form.onChange(e.target.value))}
-                        emptyMessage={form.EMPTY_MESSAGE}
-                        suggestions={optionsAutocomplete ?? []}
-                        completeMethod={(e) => completeMethodAutoComplete(e)}
-                        field={form.OPTION_LABEL}
-                        disabled={form.DISABLED}
-                      />
-                      {fieldState.error !== undefined && <span className='text-red-500'>{fieldState.error.message || form.ERROR_MESSAGE}</span>}
-                    </>
-                  )}
+                  render={({ field, fieldState }) => {
+                    form.onChange && form.onChange(field.value);
+                    return (
+                      <>
+                        <AutoComplete
+                          key={form.CTRL_KEY}
+                          className='w-full'
+                          invalid={fieldState.error !== undefined || (fieldState.isTouched && !fieldState.isDirty)}
+                          name={field.name}
+                          value={field.value}
+                          ref={field.ref}
+                          onBlur={field.onBlur}
+                          placeholder={form.PLACEHOLDER}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          emptyMessage={form.EMPTY_MESSAGE}
+                          suggestions={optionsAutocomplete ?? []}
+                          completeMethod={(e) => completeMethodAutoComplete(e)}
+                          field={form.OPTION_LABEL}
+                          disabled={form.DISABLED}
+                        />
+                        {fieldState.error !== undefined && <span className='text-red-500'>{fieldState.error.message || form.ERROR_MESSAGE}</span>}
+                      </>
+                    );
+                  }}
                 />
               )}
               {form.CTRL_TYPE === ControlType.CHECKBOX && (
@@ -214,7 +221,7 @@ const FormComponent = ({ ...props }) => {
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
-                    console.log(field);
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         <Checkbox
@@ -223,7 +230,7 @@ const FormComponent = ({ ...props }) => {
                           checked={field.value}
                           name={field.name}
                           ref={field.ref}
-                          onChange={(e) => field.onChange(e.checked, form.onChange && form.onChange(e.checked))}
+                          onChange={(e) => field.onChange(e.checked)}
                           disabled={form.DISABLED}
                         />
                         {fieldState.error !== undefined && <span className='text-red-500'>{fieldState.error.message || form.ERROR_MESSAGE}</span>}
@@ -239,6 +246,7 @@ const FormComponent = ({ ...props }) => {
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         <MultiSelect
@@ -254,7 +262,7 @@ const FormComponent = ({ ...props }) => {
                           filter={form.FILTER_MULTISELECT ?? false}
                           optionLabel={form.OPTION_LABEL}
                           onChange={(e: MultiSelectChangeEvent) => {
-                            field.onChange(e.target.value, form.onChange && form.onChange(e.target.value));
+                            field.onChange(e.target.value);
                           }}
                           maxSelectedLabels={form.MAX_SELECTED_LABEL}
                           selectionLimit={form.MAX_SELECTED_LABEL}
@@ -273,6 +281,7 @@ const FormComponent = ({ ...props }) => {
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         <MultiSelect
@@ -288,7 +297,7 @@ const FormComponent = ({ ...props }) => {
                           filter={form.FILTER_MULTISELECT ?? false}
                           optionLabel={form.OPTION_LABEL}
                           onChange={(e: MultiSelectChangeEvent) => {
-                            field.onChange(e.target.value, form.onChange && form.onChange(e.target.value));
+                            field.onChange(e.target.value);
                           }}
                           display='chip'
                           maxSelectedLabels={form.MAX_SELECTED_LABEL}
@@ -308,6 +317,7 @@ const FormComponent = ({ ...props }) => {
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         <Calendar
@@ -319,7 +329,7 @@ const FormComponent = ({ ...props }) => {
                           onBlur={field.onBlur}
                           placeholder={form.PLACEHOLDER}
                           onChange={(e: FormEvent<Date, SyntheticEvent<Element, Event>>) => {
-                            field.onChange(e.target.value, form.onChange && form.onChange(e.target.value));
+                            field.onChange(e.target.value);
                           }}
                           minDate={form.MIN_DATE}
                           maxDate={form.MAX_DATE}
@@ -339,6 +349,7 @@ const FormComponent = ({ ...props }) => {
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         <Password
@@ -350,7 +361,7 @@ const FormComponent = ({ ...props }) => {
                           onBlur={field.onBlur}
                           placeholder={form.PLACEHOLDER}
                           onInput={(e: any) => {
-                            field.onChange(e.target.value, form.onChange && form.onChange(e.target.value));
+                            field.onChange(e.target.value);
                           }}
                           toggleMask={form.TOGGLE_MASK_PASSWORD}
                           promptLabel='Choose a password'
@@ -372,6 +383,7 @@ const FormComponent = ({ ...props }) => {
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         <InputTextarea
@@ -382,7 +394,7 @@ const FormComponent = ({ ...props }) => {
                           value={field.value}
                           onBlur={field.onBlur}
                           placeholder={form.PLACEHOLDER}
-                          onChange={(e: any) => field.onChange(e.target.value, form.onChange && form.onChange(e.target.value))}
+                          onChange={(e: any) => field.onChange(e.target.value)}
                           disabled={form.DISABLED}
                           autoResize={form.AUTO_RESIZE_TEXTAREA}
                           rows={form.ROW_TEXTAREA}
@@ -401,6 +413,7 @@ const FormComponent = ({ ...props }) => {
                   control={control}
                   // rules={{ required: { value: form.REQUIRED, message: form.ERROR_MESSAGE ?? 'Required' } }}
                   render={({ field, fieldState }) => {
+                    form.onChange && form.onChange(field.value);
                     return (
                       <>
                         {form.OPTIONS?.map((item) => {
@@ -415,9 +428,7 @@ const FormComponent = ({ ...props }) => {
                                 value={item.code}
                                 onBlur={field.onBlur}
                                 placeholder={form.PLACEHOLDER}
-                                onChange={(e: any) =>
-                                  field.onChange(e.target.value, form.onChange && form.onChange(e.target.value), setCheckedRadioButton(item))
-                                }
+                                onChange={(e: any) => field.onChange(e.target.value, setCheckedRadioButton(item))}
                                 disabled={form.DISABLED}
                                 checked={checkedRadioButton?.code === item.code}
                               />
