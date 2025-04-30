@@ -47,3 +47,9 @@ export interface Options {
   name: string;
   code: string;
 }
+
+export interface SetErrorType {
+  name: string;
+  type: string;
+  message: string;
+}
